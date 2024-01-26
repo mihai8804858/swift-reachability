@@ -1,0 +1,8 @@
+included:
+  - Sources
+  - Tests
+  - Example
+  - Package.swift
+  - Package@swift-5.9.swift
+excluded:
+  - .build
