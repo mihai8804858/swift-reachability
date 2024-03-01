@@ -6,7 +6,7 @@ protocol TelephonyInfoType: Sendable {
     var currentRadioAccessTechnology: String? { get }
 }
 
-extension CTTelephonyNetworkInfo: TelephonyInfoType {}
+extension CTTelephonyNetworkInfo: TelephonyInfoType, @unchecked Sendable {}
 
 extension TelephonyInfoType {
     var currentRadioAccessTechnologies: Set<String> {

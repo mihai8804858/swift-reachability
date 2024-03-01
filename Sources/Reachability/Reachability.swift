@@ -23,23 +23,41 @@ public final class Reachability: Sendable, ObservableObject {
         monitor.cancel()
     }
 
-    public func changes() -> AsyncStream<ConnectionStatus> {
+    public func changesPublisher() -> AnyPublisher<ConnectionStatus, Never> {
         $status
             .removeDuplicates()
+            .dropFirst()
+            .eraseToAnyPublisher()
+    }
+
+    public func changes() -> AsyncStream<ConnectionStatus> {
+        changesPublisher()
             .values
             .eraseToStream()
+    }
+
+    public func expensiveChangesPublisher() -> AnyPublisher<Bool, Never> {
+        $isExpensive
+            .removeDuplicates()
+            .dropFirst()
+            .eraseToAnyPublisher()
     }
 
     public func expensiveChanges() -> AsyncStream<Bool> {
-        $isExpensive
-            .removeDuplicates()
+        expensiveChangesPublisher()
             .values
             .eraseToStream()
     }
 
-    public func constrainedChanges() -> AsyncStream<Bool> {
+    public func constrainedChangesPublisher() -> AnyPublisher<Bool, Never> {
         $isConstrained
             .removeDuplicates()
+            .dropFirst()
+            .eraseToAnyPublisher()
+    }
+
+    public func constrainedChanges() -> AsyncStream<Bool> {
+        constrainedChangesPublisher()
             .values
             .eraseToStream()
     }
