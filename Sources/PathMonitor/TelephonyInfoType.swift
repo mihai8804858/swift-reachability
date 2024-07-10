@@ -6,7 +6,11 @@ protocol TelephonyInfoType: Sendable {
     var currentRadioAccessTechnology: String? { get }
 }
 
+#if hasAttribute(retroactive)
+extension CTTelephonyNetworkInfo: TelephonyInfoType, @unchecked @retroactive Sendable {}
+#else
 extension CTTelephonyNetworkInfo: TelephonyInfoType, @unchecked Sendable {}
+#endif
 
 extension TelephonyInfoType {
     var currentRadioAccessTechnologies: Set<String> {

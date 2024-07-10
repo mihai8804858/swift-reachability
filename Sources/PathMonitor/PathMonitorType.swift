@@ -35,6 +35,12 @@ extension PathMonitorType {
     }
 }
 
+#if hasAttribute(retroactive)
+extension NWPathMonitor: @unchecked @retroactive Sendable {}
+#else
+extension NWPathMonitor: Sendable {}
+#endif
+
 extension NWPathMonitor: PathMonitorType {
     #if os(iOS)
     var telephonyNetworkInfo: TelephonyInfoType { CTTelephonyNetworkInfo() }
