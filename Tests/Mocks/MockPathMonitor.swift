@@ -21,8 +21,8 @@ final class MockPathMonitor: PathMonitorType {
     }
     #endif
 
-    let onPathUpdateCheck = FuncCheck<(PathType) -> Void>()
-    func onPathUpdate(_ callback: @escaping (PathType) -> Void) {
+    let onPathUpdateCheck = FuncCheck<@Sendable (PathType) -> Void>()
+    func onPathUpdate(_ callback: @escaping @Sendable (PathType) -> Void) {
         onPathUpdateCheck.call(callback)
     }
 

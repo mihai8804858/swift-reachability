@@ -9,7 +9,7 @@ protocol PathMonitorType: Sendable {
     #endif
     var path: PathType { get }
 
-    func onPathUpdate(_ callback: @escaping (PathType) -> Void)
+    func onPathUpdate(_ callback: @escaping @Sendable (PathType) -> Void)
     func start(queue: DispatchQueue)
     func cancel()
 }

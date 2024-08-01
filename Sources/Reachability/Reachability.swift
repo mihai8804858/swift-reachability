@@ -66,11 +66,13 @@ public final class Reachability: Sendable, ObservableObject {
 extension Reachability {
     private func observeNetworkPathChanges() {
         monitor.start(queue: DispatchQueue.global(qos: .utility))
-        monitor.onPathUpdate { [weak self] path in
-            guard let self else { return }
-            status = monitor.connectionStatus(for: path)
-            isExpensive = path.isExpensive
-            isConstrained = path.isConstrained
+        monitor.onPathUpdate { path in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                status = monitor.connectionStatus(for: path)
+                isExpensive = path.isExpensive
+                isConstrained = path.isConstrained
+            }
         }
     }
 }
