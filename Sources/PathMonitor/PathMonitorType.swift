@@ -47,7 +47,7 @@ extension NWPathMonitor: PathMonitorType {
     #endif
     var path: PathType { currentPath }
 
-    func onPathUpdate(_ callback: @escaping (PathType) -> Void) {
+    func onPathUpdate(_ callback: @escaping @Sendable (PathType) -> Void) {
         pathUpdateHandler = { callback($0) }
     }
 }

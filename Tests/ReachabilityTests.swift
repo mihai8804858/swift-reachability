@@ -1,5 +1,5 @@
 import XCTest
-import Combine
+@preconcurrency import Combine
 #if os(iOS)
 import CoreTelephony
 #endif
@@ -15,8 +15,7 @@ final class ReachabilityTests: XCTestCase {
         bag.removeAll()
     }
 
-    @MainActor
-    func test_isExpensive_shouldReturnCorrectValue() {
+    func test_isExpensive_shouldReturnCorrectValue() async {
         let path = MockPath(status: .satisfied, isExpensive: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
@@ -25,12 +24,12 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
-        let isExpensive = networkReachability.isExpensive
+        await Task.yield()
+        let isExpensive = await networkReachability.isExpensive
         XCTAssert(isExpensive)
     }
 
-    @MainActor
-    func test_isConstrained_shouldReturnCorrectValue() {
+    func test_isConstrained_shouldReturnCorrectValue() async {
         let path = MockPath(status: .satisfied, isConstrained: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
@@ -39,12 +38,12 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
-        let isConstrained = networkReachability.isConstrained
+        await Task.yield()
+        let isConstrained = await networkReachability.isConstrained
         XCTAssert(isConstrained)
     }
 
-    @MainActor
-    func test_status_shouldReturnConnectionStatus() {
+    func test_status_shouldReturnConnectionStatus() async {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
@@ -53,11 +52,11 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
-        let connectionStatus = networkReachability.status
+        await Task.yield()
+        let connectionStatus = await networkReachability.status
         XCTAssertEqual(connectionStatus, .connected(.wifi))
     }
 
-    @MainActor
     func test_changes_whenConnectionStatusChanges_shouldNotify() async {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
@@ -67,6 +66,7 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "connection status changed")
         Task.detached {
             for await status in await networkReachability.changes() {
@@ -90,7 +90,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_changesPublisher_whenConnectionStatusChanges_shouldNotify() async {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
@@ -100,8 +99,10 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "connection status changed")
-        networkReachability.changesPublisher().sink { status in
+        let publisher = await networkReachability.changesPublisher()
+        publisher.sink { status in
             #if os(iOS)
             XCTAssertEqual(status, .connected(.cellular(.cellular4G)))
             #else
@@ -121,7 +122,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_changes_whenConnectionStatusDidNotChange_shouldNotNotify() async {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
@@ -131,6 +131,7 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "connection status changed")
         Task.detached {
             for await status in await networkReachability.changes() {
@@ -156,7 +157,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_changesPublisher_whenConnectionStatusDidNotChange_shouldNotNotify() async {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
@@ -166,8 +166,10 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "connection status changed")
-        networkReachability.changesPublisher().sink { status in
+        let publisher = await networkReachability.changesPublisher()
+        publisher.sink { status in
             #if os(iOS)
             XCTAssertEqual(status, .connected(.cellular(.cellular4G)))
             #else
@@ -189,7 +191,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_expensiveChanges_whenCostChanges_shouldNotify() async {
         let path = MockPath(status: .satisfied, isExpensive: true)
         #if os(iOS)
@@ -199,6 +200,7 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "cost changed")
         Task.detached {
             for await isExpensive in await networkReachability.expensiveChanges() {
@@ -214,7 +216,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_expensiveChangesPublisher_whenCostChanges_shouldNotify() async {
         let path = MockPath(status: .satisfied, isExpensive: true)
         #if os(iOS)
@@ -224,8 +225,10 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "cost changed")
-        networkReachability.expensiveChangesPublisher().sink { isExpensive in
+        let publisher = await networkReachability.expensiveChangesPublisher()
+        publisher.sink { isExpensive in
             XCTAssertFalse(isExpensive)
             expectation.fulfill()
         }.store(in: &bag)
@@ -237,7 +240,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_constrainedChanges_whenRestrictionsChanges_shouldNotify() async {
         let path = MockPath(status: .satisfied, isConstrained: true)
         #if os(iOS)
@@ -247,6 +249,7 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "restriction changed")
         Task.detached {
             for await isConstrained in await networkReachability.constrainedChanges() {
@@ -262,7 +265,6 @@ final class ReachabilityTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
 
-    @MainActor
     func test_constrainedChangesPublisher_whenRestrictionsChanges_shouldNotify() async {
         let path = MockPath(status: .satisfied, isConstrained: true)
         #if os(iOS)
@@ -272,8 +274,10 @@ final class ReachabilityTests: XCTestCase {
         let monitor = MockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
+        await Task.yield()
         let expectation = XCTestExpectation(description: "restriction changed")
-        networkReachability.constrainedChangesPublisher().sink { isConstrained in
+        let publisher = await networkReachability.constrainedChangesPublisher()
+        publisher.sink { isConstrained in
             XCTAssertFalse(isConstrained)
             expectation.fulfill()
         }.store(in: &bag)

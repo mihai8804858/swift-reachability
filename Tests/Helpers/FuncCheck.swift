@@ -1,5 +1,5 @@
-final class FuncCheck<Argument: Sendable>: @unchecked Sendable {
-    var argument: Argument?
+final class FuncCheck<Argument: Sendable>: Sendable {
+    nonisolated(unsafe) var argument: Argument?
     var wasCalled: Bool { argument != nil }
 
     func call(_ argument: Argument) {

@@ -1,22 +1,21 @@
 import Network
 import Combine
 
-@MainActor
-public final class Reachability: Sendable, ObservableObject {
+public actor Reachability: Sendable, ObservableObject {
     public static let shared = Reachability()
 
     private let monitor: PathMonitorType
 
-    @Published public private(set) var status: ConnectionStatus
-    @Published public private(set) var isExpensive: Bool
-    @Published public private(set) var isConstrained: Bool
+    @Published public private(set) var status: ConnectionStatus = .disconnected(.notAvailable)
+    @Published public private(set) var isExpensive: Bool = false
+    @Published public private(set) var isConstrained: Bool = false
 
     init(monitor: PathMonitorType = NWPathMonitor()) {
         self.monitor = monitor
-        self.status = monitor.connectionStatus(for: monitor.path)
-        self.isExpensive = monitor.path.isExpensive
-        self.isConstrained = monitor.path.isConstrained
-        observeNetworkPathChanges()
+        Task { [weak self] in
+            await self?.networkPathChanged(monitor.path)
+            await self?.observeNetworkPathChanges()
+        }
     }
 
     deinit {
@@ -61,18 +60,21 @@ public final class Reachability: Sendable, ObservableObject {
             .values
             .eraseToStream()
     }
-}
 
-extension Reachability {
+    // MARK: - Private
+
     private func observeNetworkPathChanges() {
         monitor.start(queue: DispatchQueue.global(qos: .utility))
         monitor.onPathUpdate { path in
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                status = monitor.connectionStatus(for: path)
-                isExpensive = path.isExpensive
-                isConstrained = path.isConstrained
+            Task { [weak self] in
+                await self?.networkPathChanged(path)
             }
         }
+    }
+
+    private func networkPathChanged(_ path: PathType) {
+        status = monitor.connectionStatus(for: path)
+        isExpensive = path.isExpensive
+        isConstrained = path.isConstrained
     }
 }

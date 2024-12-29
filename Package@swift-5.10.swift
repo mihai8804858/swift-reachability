@@ -1,4 +1,4 @@
-// swift-tools-version:6.0
+// swift-tools-version:5.10
 
 import PackageDescription
 
@@ -21,8 +21,7 @@ let package = Package(
         .target(
             name: "SwiftReachability",
             path: "Sources",
-            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")]
         ),
         .testTarget(
             name: "SwiftReachabilityTests",
@@ -30,5 +29,5 @@ let package = Package(
             path: "Tests"
         )
     ],
-    swiftLanguageModes: [.v6]
+    swiftLanguageVersions: [.v5]
 )

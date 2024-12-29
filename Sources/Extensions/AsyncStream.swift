@@ -6,7 +6,8 @@ extension AsyncSequence {
 
 extension AsyncStream {
     public init<S: AsyncSequence>(_ sequence: S) where S.Element == Element {
-        var iterator: S.AsyncIterator?
+        nonisolated(unsafe) let sequence = sequence
+        nonisolated(unsafe) var iterator: S.AsyncIterator?
         self.init {
             if iterator == nil { iterator = sequence.makeAsyncIterator() }
             return try? await iterator?.next()

@@ -1,6 +1,6 @@
 import Network
 
-protocol InterfaceType {
+protocol InterfaceType: Sendable {
     var type: NWInterface.InterfaceType { get }
 }
 
