@@ -1,6 +1,6 @@
 import Network
 
-protocol PathType: Sendable {
+public protocol PathType: Sendable {
     var status: NWPath.Status { get }
     var unsatisfiedReason: NWPath.UnsatisfiedReason { get }
     var isExpensive: Bool { get }

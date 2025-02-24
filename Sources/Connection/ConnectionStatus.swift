@@ -2,6 +2,8 @@ public enum ConnectionStatus: Hashable, CustomStringConvertible, Sendable {
     case connected(ConnectionType)
     case disconnected(DisconnectedReason)
 
+    public static let unknown = ConnectionStatus.disconnected(.notAvailable)
+
     public var isConnected: Bool {
         guard case .connected = self else { return false }
         return true

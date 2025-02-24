@@ -6,11 +6,11 @@ public actor Reachability: Sendable, ObservableObject {
 
     private let monitor: PathMonitorType
 
-    @Published public private(set) var status: ConnectionStatus = .disconnected(.notAvailable)
+    @Published public private(set) var status: ConnectionStatus = .unknown
     @Published public private(set) var isExpensive: Bool = false
     @Published public private(set) var isConstrained: Bool = false
 
-    init(monitor: PathMonitorType = NWPathMonitor()) {
+    public init(monitor: PathMonitorType = NWPathMonitor()) {
         self.monitor = monitor
         Task { [weak self] in
             await self?.networkPathChanged(monitor.path)

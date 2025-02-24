@@ -1,7 +1,7 @@
 #if os(iOS)
 import CoreTelephony
 
-protocol TelephonyInfoType: Sendable {
+public protocol TelephonyInfoType: Sendable {
     var serviceCurrentRadioAccessTechnology: [String: String]? { get }
     var currentRadioAccessTechnology: String? { get }
 }
@@ -12,7 +12,7 @@ extension CTTelephonyNetworkInfo: TelephonyInfoType, @unchecked @retroactive Sen
 extension CTTelephonyNetworkInfo: TelephonyInfoType, @unchecked Sendable {}
 #endif
 
-extension TelephonyInfoType {
+public extension TelephonyInfoType {
     var currentRadioAccessTechnologies: Set<String> {
         guard let technology = serviceCurrentRadioAccessTechnology else { return [] }
         return Set(technology.values)

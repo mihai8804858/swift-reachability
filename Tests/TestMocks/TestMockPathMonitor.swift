@@ -1,13 +1,13 @@
 import Network
 @testable import SwiftReachability
 
-final class MockPathMonitor: PathMonitorType {
-    #if os(iOS)
+final class TestMockPathMonitor: PathMonitorType {
+#if os(iOS)
     let telephonyNetworkInfo: TelephonyInfoType
-    #endif
+#endif
     let path: PathType
 
-    #if os(iOS)
+#if os(iOS)
     init(
         telephonyNetworkInfo: TelephonyInfoType = MockTelephonyInfo(),
         path: PathType = MockPath()
@@ -15,11 +15,11 @@ final class MockPathMonitor: PathMonitorType {
         self.telephonyNetworkInfo = telephonyNetworkInfo
         self.path = path
     }
-    #else
+#else
     init(path: PathType = MockPath()) {
         self.path = path
     }
-    #endif
+#endif
 
     let onPathUpdateCheck = FuncCheck<@Sendable (PathType) -> Void>()
     func onPathUpdate(_ callback: @escaping @Sendable (PathType) -> Void) {

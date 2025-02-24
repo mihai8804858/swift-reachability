@@ -3,7 +3,7 @@ import Network
 import CoreTelephony
 #endif
 
-protocol PathMonitorType: Sendable {
+public protocol PathMonitorType: Sendable {
     #if os(iOS)
     var telephonyNetworkInfo: TelephonyInfoType { get }
     #endif
@@ -14,7 +14,7 @@ protocol PathMonitorType: Sendable {
     func cancel()
 }
 
-extension PathMonitorType {
+public extension PathMonitorType {
     func connectionStatus(for path: PathType) -> ConnectionStatus {
         switch path.status {
         case .satisfied: .connected(connectionType(for: path))
@@ -43,11 +43,11 @@ extension NWPathMonitor: Sendable {}
 
 extension NWPathMonitor: PathMonitorType {
     #if os(iOS)
-    var telephonyNetworkInfo: TelephonyInfoType { CTTelephonyNetworkInfo() }
+    public var telephonyNetworkInfo: TelephonyInfoType { CTTelephonyNetworkInfo() }
     #endif
-    var path: PathType { currentPath }
+    public var path: PathType { currentPath }
 
-    func onPathUpdate(_ callback: @escaping @Sendable (PathType) -> Void) {
+    public func onPathUpdate(_ callback: @escaping @Sendable (PathType) -> Void) {
         pathUpdateHandler = { callback($0) }
     }
 }

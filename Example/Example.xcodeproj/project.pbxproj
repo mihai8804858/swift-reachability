@@ -11,6 +11,7 @@
 		995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995EF5EE2B815F17000B5E39 /* ContentView.swift */; };
 		995EF5F12B815F1C000B5E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 995EF5F02B815F1C000B5E39 /* Assets.xcassets */; };
 		995EF5FD2B815FF8000B5E39 /* SwiftReachability in Frameworks */ = {isa = PBXBuildFile; productRef = 995EF5FC2B815FF8000B5E39 /* SwiftReachability */; };
+		F58A0FEE2D6CACA200DF9BF4 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58A0FED2D6CACA000DF9BF4 /* ContentViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +19,7 @@
 		995EF5EC2B815F17000B5E39 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
 		995EF5EE2B815F17000B5E39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		995EF5F02B815F1C000B5E39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F58A0FED2D6CACA000DF9BF4 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				995EF5EC2B815F17000B5E39 /* ExampleApp.swift */,
 				995EF5EE2B815F17000B5E39 /* ContentView.swift */,
+				F58A0FED2D6CACA000DF9BF4 /* ContentViewModel.swift */,
 				995EF5F02B815F1C000B5E39 /* Assets.xcassets */,
 			);
 			path = Example;
@@ -135,6 +138,7 @@
 			files = (
 				995EF5EF2B815F17000B5E39 /* ContentView.swift in Sources */,
 				995EF5ED2B815F17000B5E39 /* ExampleApp.swift in Sources */,
+				F58A0FEE2D6CACA200DF9BF4 /* ContentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +296,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
 			};
 			name = Debug;
@@ -332,7 +336,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
 			};
 			name = Release;

@@ -19,9 +19,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, isExpensive: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -33,9 +33,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, isConstrained: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -47,9 +47,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -61,9 +61,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo(type: .cellular4G)
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -94,9 +94,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo(type: .cellular4G)
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -126,9 +126,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo(type: .cellular4G)
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -161,9 +161,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, availableInterfaceTypes: .wifi)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo(type: .cellular4G)
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -195,9 +195,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, isExpensive: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -220,9 +220,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, isExpensive: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -244,9 +244,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, isConstrained: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()
@@ -269,9 +269,9 @@ final class ReachabilityTests: XCTestCase {
         let path = MockPath(status: .satisfied, isConstrained: true)
         #if os(iOS)
         let mockTelephonyInfo = MockTelephonyInfo()
-        let monitor = MockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
+        let monitor = TestMockPathMonitor(telephonyNetworkInfo: mockTelephonyInfo, path: path)
         #else
-        let monitor = MockPathMonitor(path: path)
+        let monitor = TestMockPathMonitor(path: path)
         #endif
         let networkReachability = Reachability(monitor: monitor)
         await Task.yield()

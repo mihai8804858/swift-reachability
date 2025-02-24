@@ -1,18 +1,17 @@
 #if os(iOS)
 import Network
 import CoreTelephony
-@testable import SwiftReachability
 
-final class MockTelephonyInfo: TelephonyInfoType {
-    let serviceCurrentRadioAccessTechnology: [String: String]?
-    let currentRadioAccessTechnology: String?
+public final class MockTelephonyInfo: TelephonyInfoType {
+    public let serviceCurrentRadioAccessTechnology: [String: String]?
+    public let currentRadioAccessTechnology: String?
 
-    init(technologies: [String: String]?, currentTechnology: String? = nil) {
+    public init(technologies: [String: String]?, currentTechnology: String? = nil) {
         serviceCurrentRadioAccessTechnology = technologies
         currentRadioAccessTechnology = currentTechnology
     }
 
-    init(type: ConnectionType.Cellular? = nil) {
+    public init(type: ConnectionType.Cellular? = nil) {
         switch type {
         case .cellular2G:
             serviceCurrentRadioAccessTechnology = [

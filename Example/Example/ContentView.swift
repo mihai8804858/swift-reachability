@@ -1,27 +1,28 @@
 import SwiftUI
 import SwiftReachability
+import Dependencies
 
 struct ContentView: View {
-    @ObservedObject private var reachability = Reachability.shared
+    let viewModel = ContentViewModel()
 
     var body: some View {
         Grid(horizontalSpacing: 48) {
-            if let image = reachability.status.icon {
+            if let image = viewModel.statusIcon {
                 GridRow {
                     Text("Status")
                         .gridColumnAlignment(.leading)
                     image
                         .fontWeight(.bold)
-                        .foregroundStyle(reachability.status.isConnected ? Color.green : Color.red)
+                        .foregroundStyle(viewModel.isConnected ? Color.green : Color.red)
                         .gridColumnAlignment(.trailing)
                 }
                 Divider()
             }
 
             GridRow {
-                Text(reachability.status.isConnected ? "Connected via" : "Reason")
+                Text(viewModel.isConnected ? "Connected via" : "Reason")
                     .gridColumnAlignment(.leading)
-                Text(reachability.status.description)
+                Text(viewModel.status.description)
                     .fontWeight(.bold)
                     .gridColumnAlignment(.trailing)
             }
@@ -30,9 +31,9 @@ struct ContentView: View {
             GridRow {
                 Text("Expensive")
                     .gridColumnAlignment(.leading)
-                Text(reachability.isExpensive ? "Yes" : "No")
+                Text(viewModel.isExpensive ? "Yes" : "No")
                     .fontWeight(.bold)
-                    .foregroundStyle(reachability.isExpensive ? Color.red : Color.green)
+                    .foregroundStyle(viewModel.isExpensive ? Color.red : Color.green)
                     .gridColumnAlignment(.trailing)
             }
             Divider()
@@ -40,40 +41,48 @@ struct ContentView: View {
             GridRow {
                 Text("Constrained")
                     .gridColumnAlignment(.leading)
-                Text(reachability.isConstrained ? "Yes" : "No")
+                Text(viewModel.isConstrained ? "Yes" : "No")
                     .fontWeight(.bold)
-                    .foregroundStyle(reachability.isConstrained ? Color.red : Color.green)
+                    .foregroundStyle(viewModel.isConstrained ? Color.red : Color.green)
                     .gridColumnAlignment(.trailing)
             }
         }
         .fixedSize()
         .padding()
-    }
-}
-
-extension ConnectionType {
-    var icon: Image? {
-        switch self {
-        #if os(iOS)
-        case .cellular: Image(systemName: "cellularbars")
-        #endif
-        case .wifi: Image(systemName: "wifi")
-        case .wiredEthernet: Image(systemName: "cable.connector")
-        case .loopback: Image(systemName: "point.forward.to.point.capsulepath")
-        case .unknown: nil
+        .task {
+            await viewModel.observeNetwork()
         }
     }
 }
 
-extension ConnectionStatus {
-    var icon: Image? {
-        switch self {
-        case .connected(let connectionType): connectionType.icon
-        case .disconnected: Image(systemName: "network.slash")
-        }
+#Preview("Live") {
+    withDependencies {
+        $0.reachability = Reachability()
+    } operation: {
+        ContentView()
     }
 }
 
-#Preview {
-    ContentView()
+#Preview("Connected over cellular") {
+    withDependencies {
+        $0.reachability = Reachability(monitor: MockPathMonitor(path: MockPath(status: .satisfied, availableInterfaceTypes: .cellular)))
+    } operation: {
+        ContentView()
+    }
+}
+
+#Preview("Connected over Wifi") {
+    withDependencies {
+        $0.reachability = Reachability(monitor: MockPathMonitor(path: MockPath(status: .satisfied, availableInterfaceTypes: .wifi)))
+    } operation: {
+        ContentView()
+    }
+}
+
+#Preview("Disconnected") {
+    withDependencies {
+        $0.reachability = Reachability(monitor: MockPathMonitor(path: MockPath(status: .unsatisfied, unsatisfiedReason: .wifiDenied)))
+    } operation: {
+        ContentView()
+    }
 }
